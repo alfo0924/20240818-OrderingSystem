@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Order</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<h1>Create New Order</h1>
+<form th:action="@{/orders/create}" th:object="${order}" method="post">
+    <label>Customer Name: <input type="text" th:field="*{customerName}" /></label><br/>
+    <!-- Add more fields for order items -->
+    <button type="submit">Create Order</button>
+</form>
+</body>
+</html>

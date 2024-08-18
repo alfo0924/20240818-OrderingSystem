@@ -1,4 +1,4 @@
 package fcu.web._20240818orderingsystem;
 
-public class repository {
+public class ApplicationTests {
 }
