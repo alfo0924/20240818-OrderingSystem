@@ -23,12 +23,10 @@ public class UserServiceImpl implements UserService {
             System.err.println("Error initializing admin user: " + e.getMessage());
         }
     }
-
     @Override
     public User saveUser(User user) {
         return userRepository.save(user);
     }
-
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
