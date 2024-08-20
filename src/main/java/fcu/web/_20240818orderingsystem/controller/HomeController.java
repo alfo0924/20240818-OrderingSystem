@@ -52,13 +52,11 @@ public class HomeController {
             return "redirect:/order";
         }
     }
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
-
     @GetMapping("/order")
     public String orderPage(HttpSession session) {
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
