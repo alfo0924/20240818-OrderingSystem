@@ -5,14 +5,40 @@ import fcu.web._20240818orderingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
 
+    @PostConstruct
+    public void init() {
+        try {
+            if (userRepository.findByUsername("admin") == null) {
+                User adminUser = new User("admin", "admin@example.com", "admin", true);
+                userRepository.save(adminUser);
+            }
+        } catch (Exception e) {
+            // Log the exception
+            System.err.println("Error initializing admin user: " + e.getMessage());
+        }
+    }
+
     @Override
-    public void saveUser(User user) {
-        userRepository.save(user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public boolean authenticate(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        return user != null && user.getPassword().equals(password);
     }
 }

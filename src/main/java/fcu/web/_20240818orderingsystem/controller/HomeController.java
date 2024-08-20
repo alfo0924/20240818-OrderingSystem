@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -16,9 +19,7 @@ public class HomeController {
     private UserService userService;
 
     @GetMapping("/")
-    public String home(Model model) {
-        // 這裡應該根據實際的登入邏輯來設置 loggedIn 的值
-        model.addAttribute("loggedIn", false); // 或者 true,取決於用戶是否已登入
+    public String home() {
         return "index";
     }
 
@@ -27,15 +28,35 @@ public class HomeController {
         model.addAttribute("user", new User());
         return "register";
     }
+
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user) {
-        // 這裡應該添加將用戶保存到數據庫的邏輯
-        // 確保處理 email 欄位
         userService.saveUser(user);
         return "redirect:/login";
     }
+
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
+        if (userService.authenticate(username, password)) {
+            session.setAttribute("loggedIn", true);
+            return "redirect:/order";
+        } else {
+            return "redirect:/login?error";
+        }
+    }
+
+    @GetMapping("/order")
+    public String orderPage(HttpSession session) {
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        if (loggedIn != null && loggedIn) {
+            return "order";
+        } else {
+            return "redirect:/login";
+        }
     }
 }

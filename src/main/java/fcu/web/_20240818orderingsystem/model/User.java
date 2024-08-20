@@ -1,21 +1,32 @@
 package fcu.web._20240818orderingsystem.model;
 
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-
-
+@Table(name = "`user`")  // This escapes the table name
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String username;
+
     private String email;
     private String password;
+    private boolean isAdmin;
+    // Constructors
+    public User() {}
+
+    public User(String username, String email, String password, boolean isAdmin) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
 
     // Getters and setters
     public Long getId() {
@@ -48,5 +59,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
