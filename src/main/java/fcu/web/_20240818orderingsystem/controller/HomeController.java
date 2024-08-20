@@ -39,14 +39,17 @@ public class HomeController {
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
-        if (userService.authenticate(username, password)) {
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            model.addAttribute("error", "無此帳號密碼");
+            return "login";
+        } else if (!userService.authenticate(username, password)) {
+            model.addAttribute("error", "帳號/密碼輸入錯誤，請重新輸入！");
+            return "login";
+        } else {
             session.setAttribute("loggedIn", true);
             session.setAttribute("username", username);
-            model.addAttribute("loginSuccess", true);
-            return "login-success";
-        } else {
-            model.addAttribute("error", "Invalid username or password");
-            return "login";
+            return "redirect:/order";
         }
     }
 
