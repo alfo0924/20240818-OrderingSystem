@@ -102,5 +102,17 @@ public class HomeController {
         session.setAttribute("username", existingUser.getUsername());
         return "redirect:/member";
     }
+    @GetMapping("/member/order-history")
+    public String showOrderHistory(HttpSession session, Model model) {
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        if (loggedIn != null && loggedIn) {
+            // 這裡可以添加獲取用戶訂單歷史的邏輯
+            // 例如：List<Order> orders = orderService.getOrdersByUsername((String) session.getAttribute("username"));
+            // model.addAttribute("orders", orders);
+            return "order-history";
+        } else {
+            return "redirect:/login";
+        }
+    }
 
 }
