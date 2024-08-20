@@ -1,24 +1,39 @@
 package fcu.web._20240818orderingsystem.controller;
 
-import fcu.web._20240818orderingsystem.model.Product;
-import fcu.web._20240818orderingsystem.service.ProductService;
+import fcu.web._20240818orderingsystem.model.User;
+import fcu.web._20240818orderingsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class HomeController {
 
     @Autowired
-    private ProductService productService;
+    private UserService userService;
 
     @GetMapping("/")
-    public String home(Model model) {
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products", products);
-        return "home";
+    public String home() {
+        return "index";
+    }
+
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        model.addAttribute("user", new User());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/login";
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "login";
     }
 }
