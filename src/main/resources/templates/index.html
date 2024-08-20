@@ -5,6 +5,9 @@
 </head>
 <body>
 <h1>歡迎來到訂餐系統</h1>
-<a href="/register">開始點餐</a>
+<div>
+    <a th:if="${!loggedIn}" href="/login">開始訂餐</a>
+    <a th:if="${loggedIn}" href="/order">開始訂餐</a>
+</div>
 </body>
 </html>

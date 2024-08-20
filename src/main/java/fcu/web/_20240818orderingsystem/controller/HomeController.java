@@ -16,7 +16,9 @@ public class HomeController {
     private UserService userService;
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+        // 這裡應該根據實際的登入邏輯來設置 loggedIn 的值
+        model.addAttribute("loggedIn", false); // 或者 true,取決於用戶是否已登入
         return "index";
     }
 
