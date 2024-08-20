@@ -27,13 +27,13 @@ public class HomeController {
         model.addAttribute("user", new User());
         return "register";
     }
-
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user) {
+        // 這裡應該添加將用戶保存到數據庫的邏輯
+        // 確保處理 email 欄位
         userService.saveUser(user);
         return "redirect:/login";
     }
-
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
