@@ -79,4 +79,27 @@ public class HomeController {
         }
     }
 
+
+    @GetMapping("/member/edit")
+    public String showEditMemberForm(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        User user = userService.findByUsername(username);
+        model.addAttribute("user", user);
+        return "edit-member";
+    }
+
+    @PostMapping("/member/update")
+    public String updateMember(@ModelAttribute User user, @RequestParam(required = false) String newPassword, HttpSession session) {
+        User existingUser = userService.findByUsername((String) session.getAttribute("username"));
+        existingUser.setUsername(user.getUsername());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPhoneNumber(user.getPhoneNumber());
+        if (newPassword != null && !newPassword.isEmpty()) {
+            existingUser.setPassword(newPassword); // 注意：實際應用中應該對密碼進行加密
+        }
+        userService.updateUser(existingUser);
+        session.setAttribute("username", existingUser.getUsername());
+        return "redirect:/member";
+    }
+
 }

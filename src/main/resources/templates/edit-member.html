@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改會員資料</title>
+</head>
+<body>
+<h1>修改會員資料</h1>
+<form th:action="@{/member/update}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label for="username">使用者名稱：</label>
+        <input type="text" id="username" th:field="*{username}" required />
+    </div>
+    <div>
+        <label for="email">電子郵件：</label>
+        <input type="email" id="email" th:field="*{email}" required />
+    </div>
+    <div>
+        <label for="phoneNumber">電話號碼：</label>
+        <input type="tel" id="phoneNumber" th:field="*{phoneNumber}" required />
+    </div>
+    <div>
+        <label for="password">新密碼（如不修改請留空）：</label>
+        <input type="password" id="password" name="newPassword" />
+    </div>
+    <button type="submit">更新資料</button>
+</form>
+<a href="/member">返回會員專區</a>
+</body>
+</html>
