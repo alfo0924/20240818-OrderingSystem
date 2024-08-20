@@ -65,4 +65,18 @@ public class HomeController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/member")
+    public String memberArea(HttpSession session, Model model) {
+        Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
+        if (loggedIn != null && loggedIn) {
+            String username = (String) session.getAttribute("username");
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+            return "member";
+        } else {
+            return "redirect:/login";
+        }
+    }
+
 }
