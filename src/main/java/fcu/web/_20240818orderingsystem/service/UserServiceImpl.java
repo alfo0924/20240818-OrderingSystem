@@ -4,7 +4,6 @@ import fcu.web._20240818orderingsystem.model.User;
 import fcu.web._20240818orderingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import jakarta.annotation.PostConstruct;
 
 @Service
@@ -17,11 +16,10 @@ public class UserServiceImpl implements UserService {
     public void init() {
         try {
             if (userRepository.findByUsername("admin") == null) {
-                User adminUser = new User("admin", "admin@example.com", "admin", true);
+                User adminUser = new User("admin", "admin@example.com", "admin", "0123456789", true);
                 userRepository.save(adminUser);
             }
         } catch (Exception e) {
-            // Log the exception
             System.err.println("Error initializing admin user: " + e.getMessage());
         }
     }
@@ -30,6 +28,7 @@ public class UserServiceImpl implements UserService {
     public User saveUser(User user) {
         return userRepository.save(user);
     }
+
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);

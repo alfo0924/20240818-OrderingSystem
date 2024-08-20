@@ -5,11 +5,7 @@ import fcu.web._20240818orderingsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -32,22 +28,32 @@ public class HomeController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, Model model) {
         userService.saveUser(user);
-        model.addAttribute("message", "註冊成功！3秒後將跳轉到登錄頁面。");
+        model.addAttribute("countdown", 3.00);
         return "register-success";
     }
+
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
+    public String login(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         if (userService.authenticate(username, password)) {
             session.setAttribute("loggedIn", true);
-            return "redirect:/order";
+            session.setAttribute("username", username);
+            model.addAttribute("loginSuccess", true);
+            return "login-success";
         } else {
-            return "redirect:/login?error";
+            model.addAttribute("error", "Invalid username or password");
+            return "login";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 
     @GetMapping("/order")
