@@ -30,11 +30,11 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") User user) {
+    public String registerUser(@ModelAttribute("user") User user, Model model) {
         userService.saveUser(user);
-        return "redirect:/login";
+        model.addAttribute("message", "註冊成功！3秒後將跳轉到登錄頁面。");
+        return "register-success";
     }
-
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
