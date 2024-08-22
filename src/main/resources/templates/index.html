@@ -1,10 +1,86 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>訂餐系統</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歡迎光臨點餐系統，登入以享用美味</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('https://media.gq.com.tw/photos/6232e62795165c111962d88d/16:9/w_2560%2Cc_limit/GettyImages-844466808.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.25rem; /* 全局字体大小 */
+        }
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.3); /* 半透明背景遮罩 */
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 3.5rem; /* 增加标题字体大小 */
+        }
+        p {
+            font-size: 1.85rem; /* 增加副标题字体大小 */
+        }
+        .btn-large {
+            margin-top: 20px;
+            padding: 20px 40px;
+            font-size: 1.75rem; /* 增加按钮字体大小 */
+            background-color: #007bff; /* 藍色背景 */
+            border: none;
+        }
+        .btn-register {
+            margin-top: 10px;
+            padding: 15px 35px;
+            font-size: 1.75rem; /* 增加按钮字体大小 */
+            background-color: #28a745; /* 綠色背景 */
+            border: none;
+        }
+        .link {
+            margin: 5px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.5rem; /* 增加链接字体大小 */
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .note {
+            margin-top: 10px;
+            font-size: 1.35rem; /* 增加提示信息字体大小 */
+            color: #adb5bd; /* 次要文字顏色 */
+        }
+    </style>
 </head>
 <body>
-<h1>歡迎來到訂餐系統</h1>
-<a href="/login">開始點餐</a>
+<div class="overlay">
+    <h1>歡迎來到點餐系統</h1>
+    <p>立即登入，輕鬆點餐，享受美味。</p>
+    <div class="mt-3">
+        <a href="login.html" class="link">登入</a>
+    </div>
+    <div>
+        <a href="order.html" class="btn btn-large text-white">前往點餐</a>
+    </div>
+
+    <div class="note">還不是會員？</div>
+    <div class="mt-3">
+        <a href="register.html" class="btn btn-register text-white">註冊</a>
+    </div>
+</div>
+
+<!-- 引入 Bootstrap JS 和 jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
