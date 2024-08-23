@@ -8,7 +8,7 @@ const shopitems = [
             { img: "shop1_1.jpg", name: "檸檬", price: 50 },
             { img: "shop1_2.jpg", name: "青蘋果", price: 60 },
             { img: "shop1_3.jpg", name: "萊姆", price: 40 },
-            { img: "shop1_4.jpg", name: "甜菜", price: 70 },
+            { img: "shop1_4.jpg", name: "甜菜", price: 70 }
         ]
     },
     {
@@ -59,7 +59,7 @@ const shopitems = [
             { img: "shop5.jpg", name: "青筍筍蔬果行" }
         ],
         products: [
-            { img: "shop5_1.jpg", name: "豆類", price: 30 },
+            { img: "shop5_1.jpg", name: "五穀雜糧", price: 30 },
             { img: "shop5_2.jpg", name: "藍莓", price: 75 },
             { img: "shop5_3.jpg", name: "南瓜", price: 65 },
             { img: "shop5_4.jpg", name: "拉拉山水蜜桃", price: 220},
