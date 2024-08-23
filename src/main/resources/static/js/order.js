@@ -89,67 +89,67 @@ const shopitems = [
 
 
 
-
-//     "shop6 , 撂佬大飲料料料店"
-
-// 渲染店家列表
-function renderStoreList() {
-    const storeList = document.getElementById('store-list');
-    shopitems.forEach(store => {
-        const storeCard = `
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
-                    <div class="card-body">
-                        <h5 class="card-title">${store.information[0].name}</h5>
-                        <a href="order-list.html?shopId=${store.id}" class="btn btn-primary">View Products</a>
-                    </div>
-                </div>
-            </div>
-        `;
-        storeList.innerHTML += storeCard;
-    });
-}
-
-// 渲染產品列表
-function renderProductList() {
-    // 取得URL中的shopId參數
-    const urlParams = new URLSearchParams(window.location.search);
-    const shopId = urlParams.get('shopId');
-
-    // 根據shopId查找相應的店家資料
-    const shop = shopitems.find(store => store.id === shopId);
-
-    if (shop) {
-        document.getElementById('store-name').innerText = shop.information[0].name;
-
-        const productList = document.getElementById('product-list');
-        shop.products.forEach(product => {
-            const productCard = `
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="../static/imgs/${product.img}" class="card-img-top" alt="${product.name}">
-                        <div class="card-body">
-                            <h5 class="card-title">${product.name}</h5>
-                            <p class="card-text">$${product.price}</p>
-                            <button class="btn btn-success" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            productList.innerHTML += productCard;
-        });
-    } else {
-        document.getElementById('store-name').innerText = "店家不存在";
-    }
-}
-
-// 判斷當前頁面，並根據頁面調用對應的渲染函數
-document.addEventListener('DOMContentLoaded', function() {
-    if (document.getElementById('store-list')) {
-        renderStoreList();
-    }
-    if (document.getElementById('product-list')) {
-        renderProductList();
-    }
-});
+//
+// //     "shop6 , 撂佬大飲料料料店"
+//
+// // 渲染店家列表
+// function renderStoreList() {
+//     const storeList = document.getElementById('store-list');
+//     shopitems.forEach(store => {
+//         const storeCard = `
+//             <div class="col-md-4">
+//                 <div class="card">
+//                     <img src="/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
+//                     <div class="card-body">
+//                         <h5 class="card-title">${store.information[0].name}</h5>
+//                         <a href="order-list.html?shopId=${store.id}" class="btn btn-primary">View Products</a>
+//                     </div>
+//                 </div>
+//             </div>
+//         `;
+//         storeList.innerHTML += storeCard;
+//     });
+// }
+//
+// // 渲染產品列表
+// function renderProductList() {
+//     // 取得URL中的shopId參數
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const shopId = urlParams.get('shopId');
+//
+//     // 根據shopId查找相應的店家資料
+//     const shop = shopitems.find(store => store.id === shopId);
+//
+//     if (shop) {
+//         document.getElementById('store-name').innerText = shop.information[0].name;
+//
+//         const productList = document.getElementById('product-list');
+//         shop.products.forEach(product => {
+//             const productCard = `
+//                 <div class="col-md-4">
+//                     <div class="card">
+//                         <img src="../static/imgs/${product.img}" class="card-img-top" alt="${product.name}">
+//                         <div class="card-body">
+//                             <h5 class="card-title">${product.name}</h5>
+//                             <p class="card-text">$${product.price}</p>
+//                             <button class="btn btn-success" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+//                         </div>
+//                     </div>
+//                 </div>
+//             `;
+//             productList.innerHTML += productCard;
+//         });
+//     } else {
+//         document.getElementById('store-name').innerText = "店家不存在";
+//     }
+// }
+//
+// // 判斷當前頁面，並根據頁面調用對應的渲染函數
+// document.addEventListener('DOMContentLoaded', function() {
+//     if (document.getElementById('store-list')) {
+//         renderStoreList();
+//     }
+//     if (document.getElementById('product-list')) {
+//         renderProductList();
+//     }
+// });
