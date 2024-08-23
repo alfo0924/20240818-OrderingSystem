@@ -71,6 +71,10 @@
 <div class="login-container">
     <h1 class="text-center">點餐系統登入</h1>
     <p class="text-center">輕鬆點餐，享受美味</p>
+    <!-- 添加錯誤消息顯示 -->
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
     <form th:action="@{/login}" method="post">
         <div class="form-group">
             <label for="username">用戶名：</label>
