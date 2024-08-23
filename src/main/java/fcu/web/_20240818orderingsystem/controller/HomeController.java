@@ -49,7 +49,7 @@ public class HomeController {
         } else {
             session.setAttribute("loggedIn", true);
             session.setAttribute("username", username);
-            return "redirect:/order";
+            return "redirect:/welcome";
         }
     }
     @GetMapping("/logout")
@@ -57,11 +57,11 @@ public class HomeController {
         session.invalidate();
         return "redirect:/";
     }
-    @GetMapping("/order")
+    @GetMapping("/welcome")
     public String orderPage(HttpSession session) {
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
         if (loggedIn != null && loggedIn) {
-            return "order";
+            return "welcome";
         } else {
             return "redirect:/login";
         }
