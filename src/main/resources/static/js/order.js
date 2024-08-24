@@ -204,32 +204,35 @@ function removeFromCart(index) {
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart(); // 重新渲染購物車
 }
-
-// 確認購物車並將資料存入資料庫
 function confirmCart() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    // 假設這裡使用AJAX或Fetch API將資料送到後端儲存到資料庫
-    fetch('/save-cart', {
+    fetch('/api/orders', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(cart)
-    }).then(response => {
-        if (response.ok) {
-            alert('購物車已確認並儲存！');
-            localStorage.removeItem('cart'); // 清空購物車
-            renderCart(); // 重新渲染購物車
-        } else {
-            alert('儲存過程中發生錯誤，請稍後再試。');
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Server response was not ok');
         }
-    }).catch(error => {
+        return response.json();
+    })
+    .then(data => {
+        alert('Order placed successfully! 購物車已確認並儲存！');
+        localStorage.removeItem('cart'); // Clear the cart
+        renderCart(); // Re-render the cart (assuming this function exists)
+        setTimeout(() => {
+            window.location.href = '/order-history'; // Redirect to order history page
+        }, 100);
+    })
+    .catch((error) => {
         console.error('Error:', error);
-        alert('無法連接伺服器。');
+        alert('儲存過程中發生錯誤，請稍後再試。無法連接伺服器。');
     });
 }
-
 // 判斷當前頁面並呼叫相應的渲染函數
 document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('store-list')) {
