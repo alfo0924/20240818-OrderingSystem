@@ -49,16 +49,19 @@ public class OrderController {
     public String orderPage() {
         return "order";
     }
-
-
-
-    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
-
-    @GetMapping("/ist")
+    @GetMapping("/order-list")
     public String orderListPage() {
-        logger.info("Accessing order-list page");
         return "order-list";
     }
+
+//
+//    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+//
+//    @GetMapping("/ist")
+//    public String orderListPage() {
+//        logger.info("Accessing order-list page");
+//        return "order-list";
+//    }
 
 
 }

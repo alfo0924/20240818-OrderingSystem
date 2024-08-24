@@ -117,7 +117,7 @@ function renderStoreList() {
                     <img src="/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
                     <div class="card-body">
                         <h5 class="card-title">${store.information[0].name}</h5>
-                        <a href="/orders/list?shopId=${store.id}" class="btn btn-primary">View Products</a>
+                        <a href="/orders/order-list?shopId=${store.id}" class="btn btn-primary">View Products</a>
                     </div>
                 </div>
             </div>
