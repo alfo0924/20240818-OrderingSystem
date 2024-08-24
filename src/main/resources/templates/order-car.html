@@ -71,34 +71,74 @@
         window.history.back();
     }
 
-    function confirmOrder() {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        if (cart.length === 0) {
-            alert('購物車是空的，無法送出訂單。');
-            return;
-        }
-
-        fetch('/api/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(cart)
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('訂單已成功送出！');
-            localStorage.removeItem('cart');
-            window.location.href = '/order-history';
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('訂單送出失敗，請稍後再試。');
-        });
+  function confirmOrder() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        alert('購物車是空的，無法送出訂單。');
+        return;
     }
+
+    function confirmOrder() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        alert('購物車是空的，無法送出訂單。');
+        return;
+    }
+
+    fetch('/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cart)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Server responded with status: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('訂單已成功送出！');
+        localStorage.removeItem('cart');
+        window.location.href = '/order-history';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('訂單送出失敗，請稍後再試。錯誤詳情：' + error.message);
+    });
+}
 
     // Load cart when page loads
     document.addEventListener('DOMContentLoaded', loadCart);
+
+
+
+    function confirmOrder() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        alert('購物車是空的，無法送出訂單。');
+        return;
+    }
+
+    fetch('/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cart)
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('訂單已成功送出！');
+        localStorage.removeItem('cart');
+        window.location.href = '/order-history';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('訂單送出失敗，請稍後再試。');
+    });
+}
 </script>
 </body>
 </html>
