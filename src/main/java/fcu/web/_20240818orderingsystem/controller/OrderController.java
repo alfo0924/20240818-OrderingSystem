@@ -5,14 +5,15 @@ import fcu.web._20240818orderingsystem.model.OrderItem;
 import fcu.web._20240818orderingsystem.service.OrderService;
 import fcu.web._20240818orderingsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
-@Controller
-@RequestMapping("/orders")
+@RestController
+@RequestMapping("/api/orders")
 public class OrderController {
 
     @Autowired
@@ -23,9 +24,16 @@ public class OrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
+    @PostMapping
+    public ResponseEntity<Order> createOrder(@RequestBody List<OrderItem> items, @RequestParam String userId) {
+        Order order = orderService.createOrder(userId, items);
+        return ResponseEntity.ok(order);
+    }
+
     @PostMapping("/create")
-    public String createOrder(@RequestParam("productId") List<Long> productIds,
-                              @RequestParam("quantity") List<Integer> quantities) {
+    public ResponseEntity<Order> createOrderWithProductIds(@RequestParam("productId") List<Long> productIds,
+                                                           @RequestParam("quantity") List<Integer> quantities,
+                                                           @RequestParam String userId) {
         Order order = new Order();
         for (int i = 0; i < productIds.size(); i++) {
             OrderItem item = new OrderItem();
@@ -33,29 +41,35 @@ public class OrderController {
             item.setQuantity(quantities.get(i));
             order.addItem(item);
         }
-        orderService.createOrder(order);
-        return "redirect:/orders/success";
+        Order createdOrder = orderService.createOrder(userId, order.getItems());
+        return ResponseEntity.ok(createdOrder);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Order>> getOrders(@RequestParam String userId) {
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/success")
-    public String orderSuccess() {
-        return "order-success";
+    public ResponseEntity<String> orderSuccess() {
+        return ResponseEntity.ok("Order placed successfully");
     }
 
     @GetMapping("/order")
-    public String orderPage() {
-        return "order";
+    public ResponseEntity<String> orderPage() {
+        return ResponseEntity.ok("Order page");
     }
 
     @GetMapping("/order-list")
-    public String orderListPage() {
+    public ResponseEntity<String> orderListPage() {
         logger.info("Accessing order-list page");
-        return "order-list";
+        return ResponseEntity.ok("Order list page");
     }
 
     @GetMapping("/cart")
-    public String shoppingCart() {
+    public ResponseEntity<String> shoppingCart() {
         logger.info("Accessing shopping cart page");
-        return "order-car";
+        return ResponseEntity.ok("Shopping cart page");
     }
 }
