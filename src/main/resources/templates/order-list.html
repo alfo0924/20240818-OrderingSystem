@@ -1,24 +1,86 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-TW">
 <head>
-    <title>Order List</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商店訂單列表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .product-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+        }
+        .product-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .product-name {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .product-price {
+            color: #e44d26;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<h1>Order List</h1>
-<a th:href="@{/}">返回主頁</a>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Customer Name</th>
-        <th>Total Amount</th>
-    </tr>
-    <tr th:each="order : ${orders}">
-        <td th:text="${order.id}"></td>
-        <td th:text="${order.customerName}"></td>
-        <td th:text="${order.totalAmount}"></td>
-    </tr>
-</table>
+<div class="container">
+    <h1 id="store-name"></h1>
+    <div id="product-list" class="product-list"></div>
+</div>
 
+<script src="/js/order.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const storeId = urlParams.get('id');
+
+        const store = shopitems.find(item => item.id === storeId);
+
+        if (store) {
+            document.getElementById('store-name').textContent = store.information[0].name;
+
+            const productList = document.getElementById('product-list');
+            store.products.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product-item';
+                productElement.innerHTML = `
+                        <img src="/imgs/${product.img}" alt="${product.name}">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">$${product.price}</div>
+                    `;
+                productList.appendChild(productElement);
+            });
+        } else {
+            document.body.innerHTML = '<h1>店鋪未找到</h1>';
+        }
+    });
+</script>
 </body>
 </html>
