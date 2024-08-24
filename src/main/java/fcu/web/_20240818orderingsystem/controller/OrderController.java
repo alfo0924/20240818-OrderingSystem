@@ -6,13 +6,9 @@ import fcu.web._20240818orderingsystem.service.OrderService;
 import fcu.web._20240818orderingsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.List;
 
 @Controller
@@ -24,6 +20,8 @@ public class OrderController {
 
     @Autowired
     private ProductService productService;
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @PostMapping("/create")
     public String createOrder(@RequestParam("productId") List<Long> productIds,
@@ -44,24 +42,20 @@ public class OrderController {
         return "order-success";
     }
 
-
     @GetMapping("/order")
     public String orderPage() {
         return "order";
     }
+
     @GetMapping("/order-list")
     public String orderListPage() {
+        logger.info("Accessing order-list page");
         return "order-list";
     }
 
-//
-//    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
-//
-//    @GetMapping("/ist")
-//    public String orderListPage() {
-//        logger.info("Accessing order-list page");
-//        return "order-list";
-//    }
-
-
+    @GetMapping("/cart")
+    public String shoppingCart() {
+        logger.info("Accessing shopping cart page");
+        return "order-car";
+    }
 }
