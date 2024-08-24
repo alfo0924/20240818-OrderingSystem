@@ -207,7 +207,7 @@ function removeFromCart(index) {
 function confirmCart() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    fetch('/api/orders', {
+    fetch('/orders', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -243,3 +243,34 @@ document.addEventListener('DOMContentLoaded', function () {
         renderCart();
     }
 });
+
+function confirmOrder() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        alert('購物車是空的，無法送出訂單。');
+        return;
+    }
+
+    fetch('/orders', {  // 修改這裡，從 '/api/orders' 改為 '/orders'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cart)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Server responded with status: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('訂單已成功送出！');
+        localStorage.removeItem('cart');
+        window.location.href = '/member/order-history';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('訂單送出失敗，請稍後再試。錯誤詳情：' + error.message);
+    });
+}
