@@ -44,24 +44,17 @@ public class OrderController {
         return "order-success";
     }
 
-//    @GetMapping("/list")
-//    public String listOrders(Model model) {
-//        model.addAttribute("orders", orderService.getAllOrders());
-//        return "order-list";
-//    }
+
     @GetMapping("/order")
     public String orderPage() {
         return "order";
     }
-//    @GetMapping("/order-list")
-//    public String orderListPage() {
-//        return "order-list";
-//    }
+
 
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
-    @GetMapping("/order-list")
+    @GetMapping("/ist")
     public String orderListPage() {
         logger.info("Accessing order-list page");
         return "order-list";
