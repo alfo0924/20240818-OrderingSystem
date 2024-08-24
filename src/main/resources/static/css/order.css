@@ -17,3 +17,14 @@ p{
     width: auto;
     height: 250px
 }
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inline-select {
+    display: inline-block;
+    width: auto;
+}
