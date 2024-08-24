@@ -1,44 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>訂單查詢</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
 <h1>訂單查詢</h1>
-
-<!-- 這裡可以添加訂單列表或其他相關內容 -->
-<p>您的訂單歷史將顯示在這裡。</p>
-!-- order-history.html -->
 <div id="orderHistory">
     <!-- Orders will be displayed here -->
 </div>
-<!-- 返回按鈕 -->
-<a href="/member">返回會員專區</a>
+<button onclick="location.href='/member'">返回會員專區</button>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('/api/orders')
+        fetch('/orders')
             .then(response => response.json())
             .then(orders => {
                 const orderHistory = document.getElementById('orderHistory');
                 orders.forEach(order => {
                     const orderElement = document.createElement('div');
                     orderElement.innerHTML = `
-                        <h3>Order #${order.orderNumber}</h3>
-                        <p>Date: ${order.orderDateTime}</p>
-                        <ul>
-                            ${order.items.map(item => `
-                                <li>${item.productName} - Quantity: ${item.quantity}, Price: $${item.price}</li>
-                            `).join('')}
-                        </ul>
+                        <h3>訂單編號: ${order.orderNumber}</h3>
+                        <p>日期: ${new Date(order.orderDateTime).toLocaleString()}</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>商品名稱</th>
+                                    <th>數量</th>
+                                    <th>單價</th>
+                                    <th>小計</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${order.items.map(item => `
+                                    <tr>
+                                        <td>${item.name}</td>
+                                        <td>${item.quantity}</td>
+                                        <td>$${item.price.toFixed(2)}</td>
+                                        <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     `;
                     orderHistory.appendChild(orderElement);
                 });
             })
             .catch(error => console.error('Error:', error));
     });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    fetch('/orders')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(orders => {
+            const orderHistory = document.getElementById('orderHistory');
+            if (orders.length === 0) {
+                orderHistory.innerHTML = '<p>目前沒有訂單記錄。</p>';
+                return;
+            }
+            // 原有的訂單顯示邏輯...
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('orderHistory').innerHTML = '<p>載入訂單失敗，請稍後再試。</p>';
+        });
+});
 </script>
-
-
 </body>
 </html>
