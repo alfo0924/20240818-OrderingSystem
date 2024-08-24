@@ -6,8 +6,12 @@ import fcu.web._20240818orderingsystem.service.OrderService;
 import fcu.web._20240818orderingsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -40,9 +44,28 @@ public class OrderController {
         return "order-success";
     }
 
-    @GetMapping("/list")
-    public String listOrders(Model model) {
-        model.addAttribute("orders", orderService.getAllOrders());
+//    @GetMapping("/list")
+//    public String listOrders(Model model) {
+//        model.addAttribute("orders", orderService.getAllOrders());
+//        return "order-list";
+//    }
+    @GetMapping("/order")
+    public String orderPage() {
+        return "order";
+    }
+//    @GetMapping("/order-list")
+//    public String orderListPage() {
+//        return "order-list";
+//    }
+
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
+    @GetMapping("/order-list")
+    public String orderListPage() {
+        logger.info("Accessing order-list page");
         return "order-list";
     }
+
+
 }
