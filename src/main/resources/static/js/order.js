@@ -114,7 +114,7 @@ function renderStoreList() {
         const storeCard = `
             <div class="col-md-4">
                 <div class="card">
-                    <img src="/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
+                    <img src="../static/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
                     <div class="card-body">
                         <h5 class="card-title">${store.information[0].name}</h5>
                         <a href="/orders/list?shopId=${store.id}" class="btn btn-primary">View Products</a>
@@ -187,6 +187,7 @@ function renderCart() {
     });
 }
 
+
 // 更新購物車中的產品數量
 function updateQuantity(index, newQuantity) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -204,6 +205,7 @@ function removeFromCart(index) {
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart(); // 重新渲染購物車
 }
+
 
 // 確認購物車並將資料存入資料庫
 function confirmCart() {
@@ -239,7 +241,6 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (document.getElementById('cart-list')) {
         renderCart();
     }
+
 });
-
-
 
