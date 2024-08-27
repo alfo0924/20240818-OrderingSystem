@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>購物車</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         table {
             width: 100%;
@@ -78,27 +79,27 @@
             return;
         }
 
-        fetch('/api/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+        $.ajax({
+            url: '/api/orders',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(cart),
+            success: function(data) {
+                alert('訂單已成功送出！');
+                localStorage.removeItem('cart');
+                window.location.href = '/order-history';
             },
-            body: JSON.stringify(cart)
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('訂單已成功送出！');
-            localStorage.removeItem('cart');
-            window.location.href = '/order-history';
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('訂單送出失敗，請稍後再試。');
+            error: function(error) {
+                console.error('Error:', error);
+                alert('訂單送出失敗，請稍後再試。');
+            }
         });
     }
 
     // Load cart when page loads
-    document.addEventListener('DOMContentLoaded', loadCart);
+    $(document).ready(function() {
+        loadCart();
+    });
 </script>
 </body>
 </html>
