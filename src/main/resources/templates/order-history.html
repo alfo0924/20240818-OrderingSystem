@@ -22,12 +22,12 @@
 <h1>訂單查詢</h1>
 
 <!-- 檢查是否有訂單 -->
-<div th:if="${orders.empty}">
+<div th:if="${orders.isEmpty()}">
     <p>目前沒有訂單記錄。</p>
 </div>
 
 <!-- Thymeleaf 渲染的訂單列表 -->
-<div th:each="order : ${orders}">
+<div th:unless="${orders.isEmpty()}" th:each="order : ${orders}">
     <h2>訂單日期: <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span></h2>
     <table>
         <tr>
@@ -52,7 +52,7 @@
 
 <!-- 返回按鈕 -->
 <a href="/member">返回會員專區</a>
-<button onclick="location.href='/'">返回首頁</button>
+<button onclick="location.href='/order'">返回首頁</button>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

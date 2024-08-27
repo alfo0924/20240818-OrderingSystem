@@ -5,11 +5,13 @@ import fcu.web._20240818orderingsystem.model.OrderItem;
 import fcu.web._20240818orderingsystem.service.OrderService;
 import fcu.web._20240818orderingsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -57,26 +59,30 @@ public class OrderController {
     @GetMapping("/cart")
     public String shoppingCart(Model model) {
         logger.info("Accessing shopping cart page");
-        // 這裡從session或數據庫獲取購物車項目
         model.addAttribute("cartItems", orderService.getCartItems());
         return "order-car";
     }
 
     @PostMapping("/submit-order")
     @ResponseBody
-    public String submitOrder(@RequestBody List<OrderItem> items) {
-        logger.info("Submitting order with {} items", items.size());
-        orderService.saveOrder(items);
-        logger.info("Order submitted successfully");
-        return "Order submitted successfully";
+    public ResponseEntity<String> submitOrder(@RequestBody List<OrderItem> items) {
+        logger.info("Received order submission request with {} items", items.size());
+        try {
+            orderService.saveOrder(items);
+            logger.info("Order submitted successfully");
+            return ResponseEntity.ok("Order submitted successfully");
+        } catch (Exception e) {
+            logger.error("Order submission failed", e);
+            return ResponseEntity.badRequest().body("Order submission failed: " + e.getMessage());
+        }
     }
 
     @GetMapping("/order-history")
     public String orderHistory(Model model) {
         logger.info("Accessing order history page");
         List<Order> orders = orderService.getAllOrders();
-        model.addAttribute("orders", orders);
-        logger.info("Found {} orders for display", orders.size());
+        model.addAttribute("orders", orders != null ? orders : new ArrayList<>());
+        logger.info("Found {} orders for display", orders != null ? orders.size() : 0);
         return "order-history";
     }
 }

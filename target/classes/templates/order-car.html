@@ -102,23 +102,21 @@
             items.push(item);
         });
 
-        $.ajax({
-            url: '/submit-order',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(items),
-            success: function() {
-                alert('訂單已成功提交');
-                localStorage.removeItem('cart');
-                $('#cartTable tr:not(:first)').remove(); // 清空購物車
-                location.href = '/order-history';
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                console.error(xhr.responseText);
-                alert('訂單提交失敗: ' + error);
-            }
-        });
+      $.ajax({
+    url: '/submit-order',  // 確保這個 URL 與控制器中的 @PostMapping 匹配
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(items),
+    success: function(response) {
+        alert('訂單已送出');
+        $('#cart-table tr:not(:first)').remove(); // 清空購物車
+        location.href = '/order-history'; // 導向訂單歷史頁面
+    },
+    error: function(xhr, status, error) {
+        alert('訂單提交失敗: ' + xhr.responseText);
+        console.error('Error details:', xhr.status, xhr.statusText, xhr.responseText);
+    }
+});
     }
 
     // Load cart when page loads

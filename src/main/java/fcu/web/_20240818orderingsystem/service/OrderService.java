@@ -27,6 +27,7 @@ public abstract class OrderService {
     public List<Order> getAllOrders() {
         logger.info("Fetching all orders");
         List<Order> orders = orderRepository.findAll();
+        orders = orders != null ? orders : new ArrayList<>();
         logger.info("Found {} orders", orders.size());
         return orders;
     }
@@ -47,8 +48,7 @@ public abstract class OrderService {
     // 模擬獲取購物車項目，實際應用中應該從session或數據庫獲取
     public List<OrderItem> getCartItems() {
         List<OrderItem> items = new ArrayList<>();
-        // 添加一些示例項目
-
+        // 添加一
         return items;
     }
 }
