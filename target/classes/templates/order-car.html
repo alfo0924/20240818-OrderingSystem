@@ -91,33 +91,35 @@
         submitOrder();
     }
 
-function submitOrder() {
-    var items = [];
-    $('#cart-table tr:not(:first)').each(function() {
-        var item = {
-            productName: $(this).find('td:eq(0)').text(),
-            price: parseFloat($(this).find('td:eq(1)').text()),
-            quantity: parseInt($(this).find('td:eq(2)').text())
-        };
-        items.push(item);
-    });
+    function submitOrder() {
+        var items = [];
+        $('#cartTable tr:not(:first)').each(function() {
+            var item = {
+                productName: $(this).find('td:eq(0)').text(),
+                price: parseFloat($(this).find('td:eq(1)').text()),
+                quantity: parseInt($(this).find('td:eq(2)').text())
+            };
+            items.push(item);
+        });
 
-    $.ajax({
-        url: '/orders/submit-order',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(items),
-        success: function(response) {
-            alert('訂單已送出');
-            $('#cart-table tr:not(:first)').remove(); // 清空購物車
-            location.href = '/orders/order-history'; // 導向訂單歷史頁面
-        },
-        error: function(xhr, status, error) {
-            alert('訂單提交失敗: ' + xhr.responseText);
-            console.error('Error details:', xhr.status, xhr.statusText, xhr.responseText);
-        }
-    });
-}
+        $.ajax({
+            url: '/orders/submit-order',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(items),
+            success: function(response) {
+                alert('訂單已送出');
+                $('#cartTable tr:not(:first)').remove(); // 清空購物車
+                localStorage.removeItem('cart'); // 清除本地存儲的購物車數據
+                location.href = '/orders/order-history'; // 導向訂單歷史頁面
+            },
+            error: function(xhr, status, error) {
+                alert('訂單提交失敗: ' + xhr.responseText);
+                console.error('Error details:', xhr.status, xhr.statusText, xhr.responseText);
+            }
+        });
+    }
+
     // Load cart when page loads
     $(document).ready(function() {
         if ($('#cartItems tr').length === 0) {

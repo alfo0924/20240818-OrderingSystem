@@ -3,83 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>訂單查詢</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 <body>
 <h1>訂單查詢</h1>
-
-<!-- 檢查是否有訂單 -->
 <div th:if="${orders.isEmpty()}">
     <p>目前沒有訂單記錄。</p>
 </div>
-
-<!-- Thymeleaf 渲染的訂單列表 -->
-<div th:unless="${orders.isEmpty()}" th:each="order : ${orders}">
-    <h2>訂單日期: <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span></h2>
-    <table>
-        <tr>
-            <th>商品名稱</th>
-            <th>單價</th>
-            <th>數量</th>
-            <th>總價</th>
-        </tr>
-        <tr th:each="item : ${order.items}">
-            <td th:text="${item.productName}"></td>
-            <td th:text="${item.price}"></td>
-            <td th:text="${item.quantity}"></td>
-            <td th:text="${item.price * item.quantity}"></td>
-        </tr>
-    </table>
+<div th:unless="${orders.isEmpty()}">
+    <p>訂單數量：<span th:text="${orders.size()}"></span></p>
+    <div th:each="order : ${orders}">
+        <h2>訂單編號: <span th:text="${order.id}"></span></h2>
+        <p>訂單日期: <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+        <table>
+            <tr>
+                <th>商品名稱</th>
+                <th>單價</th>
+                <th>數量</th>
+                <th>總價</th>
+            </tr>
+            <tr th:each="item : ${order.items}">
+                <td th:text="${item.productName}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.price * item.quantity}"></td>
+            </tr>
+        </table>
+    </div>
 </div>
-
-<!-- JavaScript 渲染的訂單歷史 -->
-<div id="orderHistory">
-    <!-- Orders will be displayed here -->
-</div>
-
-<!-- 返回按鈕 -->
-<a href="/member">返回會員專區</a>
-<button onclick="location.href='/order'">返回首頁</button>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/api/orders')
-            .then(response => response.json())
-            .then(orders => {
-                const orderHistory = document.getElementById('orderHistory');
-                if (orders.length === 0) {
-                    orderHistory.innerHTML = '<p>目前沒有訂單記錄。</p>';
-                } else {
-                    orders.forEach(order => {
-                        const orderElement = document.createElement('div');
-                        orderElement.innerHTML = `
-                            <h3>Order #${order.orderNumber}</h3>
-                            <p>Date: ${order.orderDateTime}</p>
-                            <ul>
-                                ${order.items.map(item => `
-                                    <li>${item.productName} - Quantity: ${item.quantity}, Price: $${item.price}</li>
-                                `).join('')}
-                            </ul>
-                        `;
-                        orderHistory.appendChild(orderElement);
-                    });
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-</script>
+<button onclick="location.href='/member'">返回會員專區</button>
 </body>
 </html>
