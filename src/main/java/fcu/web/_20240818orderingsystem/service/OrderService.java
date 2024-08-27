@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,5 +42,13 @@ public abstract class OrderService {
         order.setItems(items);
         orderRepository.save(order);
         logger.info("Order saved successfully with ID: {}", order.getId());
+    }
+
+    // 模擬獲取購物車項目，實際應用中應該從session或數據庫獲取
+    public List<OrderItem> getCartItems() {
+        List<OrderItem> items = new ArrayList<>();
+        // 添加一些示例項目
+
+        return items;
     }
 }

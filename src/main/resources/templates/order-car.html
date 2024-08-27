@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +35,13 @@
     </thead>
     <tbody id="cartItems">
     <!-- Cart items will be dynamically inserted here -->
+    <tr th:each="item : ${cartItems}">
+        <td th:text="${item.productName}"></td>
+        <td th:text="${item.price}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.price * item.quantity}"></td>
+        <td><button onclick="removeItem(this)">刪除</button></td>
+    </tr>
     </tbody>
 </table>
 
@@ -54,18 +61,20 @@
                     <td>${item.price}</td>
                     <td>${item.quantity}</td>
                     <td>${item.price * item.quantity}</td>
-                    <td><button onclick="removeItem('${item.name}')">刪除</button></td>
+                    <td><button onclick="removeItem(this)">刪除</button></td>
                 </tr>
             `;
             cartItems.innerHTML += row;
         });
     }
 
-    function removeItem(name) {
+    function removeItem(button) {
+        const row = $(button).closest('tr');
+        const name = row.find('td:first').text();
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         cart = cart.filter(item => item.name !== name);
         localStorage.setItem('cart', JSON.stringify(cart));
-        loadCart();
+        row.remove();
     }
 
     function goBack() {
@@ -101,6 +110,7 @@
             success: function() {
                 alert('訂單已成功提交');
                 localStorage.removeItem('cart');
+                $('#cartTable tr:not(:first)').remove(); // 清空購物車
                 location.href = '/order-history';
             },
             error: function(xhr, status, error) {
@@ -113,7 +123,9 @@
 
     // Load cart when page loads
     $(document).ready(function() {
-        loadCart();
+        if ($('#cartItems tr').length === 0) {
+            loadCart();
+        }
     });
 </script>
 </body>

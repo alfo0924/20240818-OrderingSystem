@@ -55,17 +55,20 @@ public class OrderController {
     }
 
     @GetMapping("/cart")
-    public String shoppingCart() {
+    public String shoppingCart(Model model) {
         logger.info("Accessing shopping cart page");
+        // 這裡從session或數據庫獲取購物車項目
+        model.addAttribute("cartItems", orderService.getCartItems());
         return "order-car";
     }
 
     @PostMapping("/submit-order")
+    @ResponseBody
     public String submitOrder(@RequestBody List<OrderItem> items) {
         logger.info("Submitting order with {} items", items.size());
         orderService.saveOrder(items);
         logger.info("Order submitted successfully");
-        return "redirect:/order-history";
+        return "Order submitted successfully";
     }
 
     @GetMapping("/order-history")
@@ -76,5 +79,4 @@ public class OrderController {
         logger.info("Found {} orders for display", orders.size());
         return "order-history";
     }
-
 }
