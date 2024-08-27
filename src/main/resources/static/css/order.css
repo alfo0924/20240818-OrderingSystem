@@ -1,5 +1,7 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 body{
     background-color: #1E1E1E;
+    font-family: 'Noto Sans TC',sans-serif !important;
 }
 h1{
     color: white;
@@ -15,7 +17,7 @@ p{
 
 .nav-link {
     color: white; /* 設定連結文字顏色為白色 */
-    font-size: 25px; /* 調整字體大小 */
+    font-size: 25px;/* 調整字體大小 */
     font-weight: bold; /* 設定字體為粗體 */
     padding: 10px 15px; /* 調整內部填充空間 */
     transition: color 0.3s ease, background-color 0.3s ease; /* 添加過渡效果 */
@@ -49,6 +51,19 @@ p{
     border-radius: 10px; /* 可選，讓邊框有圓角 */
     border: 3px solid rgba(255, 255, 255, 0.1); /* 白色邊框，透明度10% */
 }
+.carousel-item {
+    height: 400px; /* 設置一個固定高度，根據需要調整 */
+}
+.carousel-item img {
+    object-fit: cover;
+    object-position: center;
+    height: 100%;
+    width: 100%;
+    transition: transform 1.5s ease;
+}
+.carousel-item.active img {
+    transform: scale(1.1);
+}
 
 .card{
     margin: 20px 0 0 0;
@@ -75,7 +90,7 @@ p{
 
 .fontstyle{
     font-weight: bold;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .btnmove {
@@ -134,4 +149,8 @@ p{
 
 .btnmove span:nth-child(4) {
     --n: 4;
+}
+
+.inlineblock {
+    margin-right: 20px;
 }
