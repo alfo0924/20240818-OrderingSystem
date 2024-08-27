@@ -133,8 +133,13 @@ function renderStoreList() {
                 <div class="card">
                     <img src="/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
                     <div class="card-body">
-                        <h5 class="card-title">${store.information[0].name}</h5>
-                        <a href="/orders/order-list?shopId=${store.id}" class="btn btn-primary">觀看商品</a>
+                        <h5 class="card-title fontstyle">${store.information[0].name}</h5>
+                        <a href="/orders/order-list?shopId=${store.id}" class="btn btn-primary btnmove">觀看商品
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -158,14 +163,19 @@ function renderProductList() {
         const productList = document.getElementById('product-list');
         shop.products.forEach(product => {
             const productCard = `
-                <div class="col-md-4">
+                <div class="col-md-4" >
                     <div class="card">
                         <img src="/imgs/${product.img}" class="card-img-top" alt="${product.name}">
-                        <div class="card-body">
+                        <div class="card-body fontstyle" style="background-color: rgba(0, 0, 0, 0.8);>
                             <span class="card-title">${product.name}</span>
-                            <span class="card-text">$${product.price}</span>
+                            <span class="card-text fontstyle">$${product.price}</span>
                             <div class="flex-container">
-                                <button class="btn btn-success" onclick="addToCart('${product.name}', ${product.price}, document.getElementById('quantity-${product.name}').value)">加入購物車</button>
+                                <button class="btn btn-primary btnmove" onclick="addToCart('${product.name}', ${product.price}, document.getElementById('quantity-${product.name}').value)">加入購物車
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                </button>
                                 <select class="form-select inline-select" id="quantity-${product.name}">
                                     ${Array.from({length: 10}, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('')}
                                 </select>

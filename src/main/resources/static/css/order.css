@@ -13,6 +13,20 @@ p{
     margin: 0 0 0 50px;
 }
 
+.nav-link {
+    color: white; /* 設定連結文字顏色為白色 */
+    font-size: 25px; /* 調整字體大小 */
+    font-weight: bold; /* 設定字體為粗體 */
+    padding: 10px 15px; /* 調整內部填充空間 */
+    transition: color 0.3s ease, background-color 0.3s ease; /* 添加過渡效果 */
+}
+
+.nav-link:hover {
+    color: #4CAF50; /* 當滑鼠懸停時，改變文字顏色 */
+    background-color: #ffffff33; /* 當滑鼠懸停時，增加半透明背景 */
+    border-radius: 5px; /* 在懸停時讓背景有圓角效果 */
+}
+
 .card-img-top{
     width: auto;
     height: 225px
@@ -27,4 +41,97 @@ p{
 .inline-select {
     display: inline-block;
     width: auto;
+}
+
+.iconimg{
+    width: 60px;
+    height: auto;
+    border-radius: 10px; /* 可選，讓邊框有圓角 */
+    border: 3px solid rgba(255, 255, 255, 0.1); /* 白色邊框，透明度10% */
+}
+
+.card{
+    margin: 20px 0 0 0;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 3px; /* 根據需要調整 */
+    border-radius: 5px; /* 可選，讓邊框有圓角 */
+    background-color: transparent;
+}
+
+.navbarbackground{
+    background: linear-gradient(to bottom, #131313, #313131);
+    border: 2px solid rgba(255, 255, 255, 0.1); /* 白色邊框，透明度10% */
+    padding: 10px; /* 根據需要調整 */
+    border-radius: 5px; /* 可選，讓邊框有圓角 */
+}
+
+.card-body{
+    margin: 5px 0 0 0;
+    background-color: #4CAF50; /* 綠色基底 */
+    background-image: linear-gradient(to bottom,#388E3C , #4CAF50, #66BB6A);
+    border-radius: 5px; /* 讓邊角有圓潤效果 */
+    padding: 10px;
+}
+
+.fontstyle{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.btnmove {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    min-width: 200px;
+    background: #FFFFFF;
+    border: 2px solid goldenrod;
+    border-radius: 4px;
+    color: goldenrod;
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    overflow: hidden;
+    transition: 0.5s;
+    padding: 10px 20px;
+    cursor: pointer; /* 添加光標指針以表示可點擊 */
+}
+
+.btnmove span {
+    position: absolute;
+    width: 25%;
+    height: 100%;
+    background-color: goldenrod;
+    transform: translateY(150%);
+    border-radius: 50%;
+    left: calc((var(--n) - 1) * 25%);
+    transition: 0.5s;
+    transition-delay: calc((var(--n) - 1) * 0.1s);
+    z-index: -1;
+}
+
+.btnmove:hover,
+.btnmove:focus {
+    color: black;
+}
+
+.btnmove:hover span {
+    transform: translateY(0) scale(2);
+}
+
+.btnmove span:nth-child(1) {
+    --n: 1;
+}
+
+.btnmove span:nth-child(2) {
+    --n: 2;
+}
+
+.btnmove span:nth-child(3) {
+    --n: 3;
+}
+
+.btnmove span:nth-child(4) {
+    --n: 4;
 }
