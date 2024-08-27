@@ -21,6 +21,11 @@
 <body>
 <h1>訂單查詢</h1>
 
+<!-- 檢查是否有訂單 -->
+<div th:if="${orders.empty}">
+    <p>目前沒有訂單記錄。</p>
+</div>
+
 <!-- Thymeleaf 渲染的訂單列表 -->
 <div th:each="order : ${orders}">
     <h2>訂單日期: <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span></h2>
@@ -54,19 +59,23 @@
             .then(response => response.json())
             .then(orders => {
                 const orderHistory = document.getElementById('orderHistory');
-                orders.forEach(order => {
-                    const orderElement = document.createElement('div');
-                    orderElement.innerHTML = `
-                        <h3>Order #${order.orderNumber}</h3>
-                        <p>Date: ${order.orderDateTime}</p>
-                        <ul>
-                            ${order.items.map(item => `
-                                <li>${item.productName} - Quantity: ${item.quantity}, Price: $${item.price}</li>
-                            `).join('')}
-                        </ul>
-                    `;
-                    orderHistory.appendChild(orderElement);
-                });
+                if (orders.length === 0) {
+                    orderHistory.innerHTML = '<p>目前沒有訂單記錄。</p>';
+                } else {
+                    orders.forEach(order => {
+                        const orderElement = document.createElement('div');
+                        orderElement.innerHTML = `
+                            <h3>Order #${order.orderNumber}</h3>
+                            <p>Date: ${order.orderDateTime}</p>
+                            <ul>
+                                ${order.items.map(item => `
+                                    <li>${item.productName} - Quantity: ${item.quantity}, Price: $${item.price}</li>
+                                `).join('')}
+                            </ul>
+                        `;
+                        orderHistory.appendChild(orderElement);
+                    });
+                }
             })
             .catch(error => console.error('Error:', error));
     });

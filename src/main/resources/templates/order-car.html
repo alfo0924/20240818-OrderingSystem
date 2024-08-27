@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>購物車</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         table {
             width: 100%;
@@ -79,19 +79,34 @@
             return;
         }
 
+        submitOrder();
+    }
+
+    function submitOrder() {
+        var items = [];
+        $('#cartTable tr:not(:first)').each(function() {
+            var item = {
+                productName: $(this).find('td:eq(0)').text(),
+                price: parseFloat($(this).find('td:eq(1)').text()),
+                quantity: parseInt($(this).find('td:eq(2)').text())
+            };
+            items.push(item);
+        });
+
         $.ajax({
-            url: '/api/orders',
+            url: '/submit-order',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(cart),
-            success: function(data) {
-                alert('訂單已成功送出！');
+            data: JSON.stringify(items),
+            success: function() {
+                alert('訂單已成功提交');
                 localStorage.removeItem('cart');
-                window.location.href = '/order-history';
+                location.href = '/order-history';
             },
-            error: function(error) {
+            error: function(xhr, status, error) {
                 console.error('Error:', error);
-                alert('訂單送出失敗，請稍後再試。');
+                console.error(xhr.responseText);
+                alert('訂單提交失敗: ' + error);
             }
         });
     }

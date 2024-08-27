@@ -62,13 +62,19 @@ public class OrderController {
 
     @PostMapping("/submit-order")
     public String submitOrder(@RequestBody List<OrderItem> items) {
+        logger.info("Submitting order with {} items", items.size());
         orderService.saveOrder(items);
-        return "redirect:/orders/order-history";
+        logger.info("Order submitted successfully");
+        return "redirect:/order-history";
     }
 
     @GetMapping("/order-history")
     public String orderHistory(Model model) {
-        model.addAttribute("orders", orderService.getAllOrders());
+        logger.info("Accessing order history page");
+        List<Order> orders = orderService.getAllOrders();
+        model.addAttribute("orders", orders);
+        logger.info("Found {} orders for display", orders.size());
         return "order-history";
     }
+
 }
