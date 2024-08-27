@@ -16,6 +16,10 @@ public class Order {
     private Long id;
 
     private String orderNumber;
+
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
+
     private LocalDateTime orderDateTime;
     private String userId;
 

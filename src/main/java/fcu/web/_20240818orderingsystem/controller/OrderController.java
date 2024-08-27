@@ -6,6 +6,7 @@ import fcu.web._20240818orderingsystem.service.OrderService;
 import fcu.web._20240818orderingsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,5 +58,17 @@ public class OrderController {
     public String shoppingCart() {
         logger.info("Accessing shopping cart page");
         return "order-car";
+    }
+
+    @PostMapping("/submit-order")
+    public String submitOrder(@RequestBody List<OrderItem> items) {
+        orderService.saveOrder(items);
+        return "redirect:/orders/order-history";
+    }
+
+    @GetMapping("/order-history")
+    public String orderHistory(Model model) {
+        model.addAttribute("orders", orderService.getAllOrders());
+        return "order-history";
     }
 }

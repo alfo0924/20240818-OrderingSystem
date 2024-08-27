@@ -1,20 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>訂單查詢</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
 <h1>訂單查詢</h1>
 
-<!-- 這裡可以添加訂單列表或其他相關內容 -->
-<p>您的訂單歷史將顯示在這裡。</p>
-!-- order-history.html -->
+<!-- Thymeleaf 渲染的訂單列表 -->
+<div th:each="order : ${orders}">
+    <h2>訂單日期: <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span></h2>
+    <table>
+        <tr>
+            <th>商品名稱</th>
+            <th>單價</th>
+            <th>數量</th>
+            <th>總價</th>
+        </tr>
+        <tr th:each="item : ${order.items}">
+            <td th:text="${item.productName}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.price * item.quantity}"></td>
+        </tr>
+    </table>
+</div>
+
+<!-- JavaScript 渲染的訂單歷史 -->
 <div id="orderHistory">
     <!-- Orders will be displayed here -->
 </div>
+
 <!-- 返回按鈕 -->
 <a href="/member">返回會員專區</a>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/orders')
@@ -38,7 +71,5 @@
             .catch(error => console.error('Error:', error));
     });
 </script>
-
-
 </body>
 </html>
