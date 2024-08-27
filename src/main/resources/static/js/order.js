@@ -85,6 +85,22 @@ const shopitems = [
     },
 ];
 
+// 更新購物車圖標的函數
+function updateCartIcon() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartIcon = document.getElementById('cart-icon');
+
+    if (cartIcon) {
+        if (cart.length > 0) {
+            cartIcon.src = "/imgs/grocery-color.png"; // 有商品時顯示彩色圖標
+        } else {
+            cartIcon.src = "/imgs/grocery.png"; // 無商品時顯示灰色圖標
+        }
+    }
+}
+
+
+
 // 將購物車資料存入 localStorage
 function addToCart(productName, productPrice, quantity) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -105,6 +121,7 @@ function addToCart(productName, productPrice, quantity) {
 // 更新購物車到 localStorage
     localStorage.setItem('cart', JSON.stringify(cart));
     alert('已加入購物車！');
+    updateCartIcon();
 }
 
 // 渲染店家列表
@@ -117,7 +134,7 @@ function renderStoreList() {
                     <img src="/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
                     <div class="card-body">
                         <h5 class="card-title">${store.information[0].name}</h5>
-                        <a href="/orders/order-list?shopId=${store.id}" class="btn btn-primary">View Products</a>
+                        <a href="/orders/order-list?shopId=${store.id}" class="btn btn-primary">觀看商品</a>
                     </div>
                 </div>
             </div>
@@ -148,7 +165,7 @@ function renderProductList() {
                             <span class="card-title">${product.name}</span>
                             <span class="card-text">$${product.price}</span>
                             <div class="flex-container">
-                                <button class="btn btn-success" onclick="addToCart('${product.name}', ${product.price}, document.getElementById('quantity-${product.name}').value)">Add to Cart</button>
+                                <button class="btn btn-success" onclick="addToCart('${product.name}', ${product.price}, document.getElementById('quantity-${product.name}').value)">加入購物車</button>
                                 <select class="form-select inline-select" id="quantity-${product.name}">
                                     ${Array.from({length: 10}, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('')}
                                 </select>
@@ -195,6 +212,7 @@ function updateQuantity(index, newQuantity) {
     cart[index].quantity = parseInt(newQuantity);
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart(); // 重新渲染購物車
+    updateCartIcon();
 }
 
 // 從購物車中刪除產品
@@ -203,6 +221,7 @@ function removeFromCart(index) {
     cart.splice(index, 1); // 移除指定索引的產品
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart(); // 重新渲染購物車
+    updateCartIcon();
 }
 function confirmCart() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -224,6 +243,7 @@ function confirmCart() {
         alert('Order placed successfully! 購物車已確認並儲存！');
         localStorage.removeItem('cart'); // Clear the cart
         renderCart(); // Re-render the cart (assuming this function exists)
+        updateCartIcon();
         setTimeout(() => {
             window.location.href = '/order-history'; // Redirect to order history page
         }, 100);
@@ -242,4 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (document.getElementById('cart-list')) {
         renderCart();
     }
+    updateCartIcon();
 });
+
+
