@@ -66,17 +66,19 @@ public class OrderController {
     @PostMapping("/submit-order")
     @ResponseBody
     public ResponseEntity<String> submitOrder(@RequestBody List<OrderItem> items) {
-        logger.info("Received order submission request with {} items", items.size());
         try {
             orderService.saveOrder(items);
-            logger.info("Order submitted successfully");
             return ResponseEntity.ok("Order submitted successfully");
         } catch (Exception e) {
-            logger.error("Order submission failed", e);
             return ResponseEntity.badRequest().body("Order submission failed: " + e.getMessage());
         }
     }
 
+    @GetMapping("/test-order-submission")
+    @ResponseBody
+    public String testOrderSubmission() {
+        return "Order submission endpoint is working";
+    }
     @GetMapping("/order-history")
     public String orderHistory(Model model) {
         logger.info("Accessing order history page");
@@ -85,4 +87,10 @@ public class OrderController {
         logger.info("Found {} orders for display", orders != null ? orders.size() : 0);
         return "order-history";
     }
+    @GetMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "Test endpoint working";
+    }
+
 }
