@@ -130,7 +130,7 @@ function renderStoreList() {
     shopitems.forEach(store => {
         const storeCard = `
             <div class="col-md-4">
-                <div class="card">
+                <div class="card card-hover-scale card-hover-shadow">
                     <img src="/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
                     <div class="card-body">
                         <h5 class="card-title fontstyle">${store.information[0].name}</h5>
@@ -164,7 +164,7 @@ function renderProductList() {
         shop.products.forEach(product => {
             const productCard = `
                 <div class="col-md-4" >
-                    <div class="card">
+                    <div class="card card-hover-scale card-hover-shadow">
                         <img src="/imgs/${product.img}" class="card-img-top" alt="${product.name}">
                         <div class="card-body fontstyle" style="background-color: rgba(0, 0, 0, 0.8);>
                             <span class="card-title">${product.name}</span>
@@ -276,3 +276,61 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+function loadCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+
+    cart.forEach(item => {
+        const row = `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.price * item.quantity}</td>
+                    <td><button onclick="removeItem('${item.name}')">刪除</button></td>
+                </tr>
+            `;
+        cartItems.innerHTML += row;
+    });
+}
+
+function removeItem(name) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => item.name !== name);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    loadCart();
+}
+
+function goBack() {
+    window.history.back();
+}
+
+function confirmOrder() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        alert('購物車是空的，無法送出訂單。');
+        return;
+    }
+
+    fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cart)
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert('訂單已成功送出！');
+            localStorage.removeItem('cart');
+            window.location.href = '/order-history';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('訂單送出失敗，請稍後再試。');
+        });
+}
+
+// Load cart when page loads
+document.addEventListener('DOMContentLoaded', loadCart);
