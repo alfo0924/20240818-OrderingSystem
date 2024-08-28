@@ -40,6 +40,10 @@ public class HomeController {
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         User user = userService.findByUsername(username);
+        if (username.isEmpty() || password.isEmpty()) {
+            model.addAttribute("error", "請輸入帳號密碼");
+            return "login";
+        }
         if (user == null) {
             model.addAttribute("error", "無此帳號密碼");
             return "login";
