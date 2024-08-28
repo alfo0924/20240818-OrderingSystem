@@ -53,7 +53,7 @@ public class HomeController {
         } else {
             session.setAttribute("loggedIn", true);
             session.setAttribute("username", username);
-            return "redirect:/order";
+            return "login-success";
         }
     }
     @GetMapping("/logout")
