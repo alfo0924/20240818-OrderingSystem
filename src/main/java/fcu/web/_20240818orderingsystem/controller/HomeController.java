@@ -53,14 +53,17 @@ public class HomeController {
         } else {
             session.setAttribute("loggedIn", true);
             session.setAttribute("username", username);
+            session.setAttribute("userId", user.getId());  // 添加這行來設置userId
             return "login-success";
         }
     }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
+
     @GetMapping("/order")
     public String orderPage(HttpSession session) {
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
@@ -84,7 +87,6 @@ public class HomeController {
         }
     }
 
-
     @GetMapping("/member/edit")
     public String showEditMemberForm(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
@@ -106,6 +108,7 @@ public class HomeController {
         session.setAttribute("username", existingUser.getUsername());
         return "redirect:/member";
     }
+
     @GetMapping("/member/order-history")
     public String showOrderHistory(HttpSession session, Model model) {
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
@@ -118,5 +121,4 @@ public class HomeController {
             return "redirect:/login";
         }
     }
-
 }

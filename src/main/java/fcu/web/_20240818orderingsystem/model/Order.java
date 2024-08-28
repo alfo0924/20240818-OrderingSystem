@@ -21,7 +21,10 @@ public class Order {
     private LocalDateTime orderDate;
 
     private LocalDateTime orderDateTime;
-    private String userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
@@ -32,5 +35,23 @@ public class Order {
         item.setOrder(this);
     }
 
-    // Lombok @Data annotation generates getters, setters, toString, equals, and hashCode methods
+    // Explicitly defined setUser and getUser methods
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    private String status;
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    // Lombok @Data annotation generates other getters, setters, toString, equals, and hashCode methods
 }

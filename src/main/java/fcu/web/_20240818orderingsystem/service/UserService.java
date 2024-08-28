@@ -7,4 +7,5 @@ public interface UserService {
     User updateUser(User user);
     User findByUsername(String username);
     boolean authenticate(String username, String password);
+
 }
