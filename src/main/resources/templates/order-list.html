@@ -5,17 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/order.css">
 </head>
 <body>
-<div class="container mt-5 col-12 p-5">
+
+<div id="demo" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="marquee-content">
+                <img src="/imgs/bag.webp" alt="bag" class="d-block w-100">
+                <div class="carousel-caption">
+                    <h1>Eats點起來</h1>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="/imgs/coffee.webp" alt="coffee" class="d-block w-100">
+            <div class="carousel-caption">
+                <h1 class="text-dark">喝杯咖啡的時間Eats點</h1>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-sm navbar-dark navbarbackground col-12">
+    <div class="container-fluid">
+        <a class="navbar-brand" >
+            <img src="/imgs/logo.png" alt="Logo" class="iconimg">
+        </a>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a href="/member" class="nav-link " >會員專區</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/index" class="nav-link" >登出</a>
+                </li>
+
+            </ul>
+            <form class="d-flex">
+                <a class="navbar-brand" href="/orders/cart">
+                    <img src="/imgs/grocery.png" alt="Cart" id="cart-icon" style="width:50px;">
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-2 p-5 col-12">
     <h1 id="store-name"></h1>
-    <div class="row mt-4" id="product-list">
+    <div class="row " id="product-list">
         <!-- 這裡將會動態插入商品卡片 -->
     </div>
-    <a href="/orders/cart" class="btn btn-primary mt-4">購物車</a>
-    <a href="/order" class="btn btn-primary mt-4">返回</a>
+    <a href="/orders/cart" class=" btn btn-primary animated-button mt-4">購物車
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </a>
+    <a href="/order" class="btn btn-primary animated-button mt-4">返回
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </a>
 </div>
+
 <script src="/js/order.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

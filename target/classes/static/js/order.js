@@ -85,6 +85,22 @@ const shopitems = [
     },
 ];
 
+// 更新購物車圖標的函數
+function updateCartIcon() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartIcon = document.getElementById('cart-icon');
+
+    if (cartIcon) {
+        if (cart.length > 0) {
+            cartIcon.src = "/imgs/grocery-color.png"; // 有商品時顯示彩色圖標
+        } else {
+            cartIcon.src = "/imgs/grocery.png"; // 無商品時顯示灰色圖標
+        }
+    }
+}
+
+
+
 // 將購物車資料存入 localStorage
 function addToCart(productName, productPrice, quantity) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -105,6 +121,7 @@ function addToCart(productName, productPrice, quantity) {
 // 更新購物車到 localStorage
     localStorage.setItem('cart', JSON.stringify(cart));
     alert('已加入購物車！');
+    updateCartIcon();
 }
 
 // 渲染店家列表
@@ -113,11 +130,16 @@ function renderStoreList() {
     shopitems.forEach(store => {
         const storeCard = `
             <div class="col-md-4">
-                <div class="card">
+                <div class="card card-hover-scale card-hover-shadow">
                     <img src="/imgs/${store.information[0].img}" class="card-img-top" alt="${store.information[0].name}">
                     <div class="card-body">
-                        <h5 class="card-title">${store.information[0].name}</h5>
-                        <a href="/orders/order-list?shopId=${store.id}" class="btn btn-primary">View Products</a>
+                        <h5 class="card-title fontstyle">${store.information[0].name}</h5>
+                        <a href="/orders/order-list?shopId=${store.id}" class="btn btn-primary btnmove">觀看商品
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -141,14 +163,19 @@ function renderProductList() {
         const productList = document.getElementById('product-list');
         shop.products.forEach(product => {
             const productCard = `
-                <div class="col-md-4">
-                    <div class="card">
+                <div class="col-md-4" >
+                    <div class="card card-hover-scale card-hover-shadow">
                         <img src="/imgs/${product.img}" class="card-img-top" alt="${product.name}">
-                        <div class="card-body">
+                        <div class="card-body fontstyle" style="background-color: rgba(0, 0, 0, 0.8);>
                             <span class="card-title">${product.name}</span>
-                            <span class="card-text">$${product.price}</span>
+                            <span class="card-text fontstyle">$${product.price}</span>
                             <div class="flex-container">
-                                <button class="btn btn-success" onclick="addToCart('${product.name}', ${product.price}, document.getElementById('quantity-${product.name}').value)">Add to Cart</button>
+                                <button class="btn btn-primary btnmove" onclick="addToCart('${product.name}', ${product.price}, document.getElementById('quantity-${product.name}').value)">加入購物車
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                </button>
                                 <select class="form-select inline-select" id="quantity-${product.name}">
                                     ${Array.from({length: 10}, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('')}
                                 </select>
@@ -195,6 +222,7 @@ function updateQuantity(index, newQuantity) {
     cart[index].quantity = parseInt(newQuantity);
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart(); // 重新渲染購物車
+    updateCartIcon();
 }
 
 // 從購物車中刪除產品
@@ -203,6 +231,7 @@ function removeFromCart(index) {
     cart.splice(index, 1); // 移除指定索引的產品
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart(); // 重新渲染購物車
+    updateCartIcon();
 }
 function confirmCart() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -224,6 +253,7 @@ function confirmCart() {
         alert('Order placed successfully! 購物車已確認並儲存！');
         localStorage.removeItem('cart'); // Clear the cart
         renderCart(); // Re-render the cart (assuming this function exists)
+        updateCartIcon();
         setTimeout(() => {
             window.location.href = '/order-history'; // Redirect to order history page
         }, 100);
@@ -242,4 +272,65 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (document.getElementById('cart-list')) {
         renderCart();
     }
+    updateCartIcon();
 });
+
+
+function loadCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+
+    cart.forEach(item => {
+        const row = `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.price * item.quantity}</td>
+                    <td><button onclick="removeItem('${item.name}')">刪除</button></td>
+                </tr>
+            `;
+        cartItems.innerHTML += row;
+    });
+}
+
+function removeItem(name) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => item.name !== name);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    loadCart();
+}
+
+function goBack() {
+    window.history.back();
+}
+
+function confirmOrder() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        alert('購物車是空的，無法送出訂單。');
+        return;
+    }
+
+    fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cart)
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert('訂單已成功送出！');
+            localStorage.removeItem('cart');
+            window.location.href = '/order-history';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('訂單送出失敗，請稍後再試。');
+        });
+}
+
+// Load cart when page loads
+document.addEventListener('DOMContentLoaded', loadCart);
