@@ -164,7 +164,7 @@ function renderProductList() {
         shop.products.forEach(product => {
             const productCard = `
                 <div class="col-md-4" >
-                    <div class="card card-hover-scale card-hover-shadow">
+                    <div class="col-md-8  card card-hover-scale card-hover-shadow">
                         <img src="/imgs/${product.img}" class="card-img-top" alt="${product.name}">
                         <div class="card-body fontstyle" style="background-color: rgba(0, 0, 0, 0.8);>
                             <span class="card-title">${product.name}</span>
