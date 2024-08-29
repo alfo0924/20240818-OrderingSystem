@@ -38,6 +38,7 @@ public class OrderController {
         if (userId == null) {
             return "redirect:/login";
         }
+
         List<OrderItem> items = new ArrayList<>();
         for (int i = 0; i < productIds.size(); i++) {
             OrderItem item = new OrderItem();
@@ -45,6 +46,7 @@ public class OrderController {
             item.setQuantity(quantities.get(i));
             items.add(item);
         }
+
         orderService.createOrder(userId, items);
         return "redirect:/orders/success";
     }
@@ -71,6 +73,7 @@ public class OrderController {
         if (userId == null) {
             return "redirect:/login";
         }
+
         Map<Long, List<Product>> userCarts = (Map<Long, List<Product>>) session.getAttribute("userCarts");
         List<Product> cart = userCarts != null ? userCarts.getOrDefault(userId, new ArrayList<>()) : new ArrayList<>();
         model.addAttribute("cartItems", cart);
@@ -84,6 +87,7 @@ public class OrderController {
         if (userId == null) {
             return ResponseEntity.badRequest().body("User not logged in");
         }
+
         try {
             orderService.createOrder(userId, items);
             return ResponseEntity.ok("Order submitted successfully");
@@ -105,6 +109,7 @@ public class OrderController {
         if (userId == null) {
             return "redirect:/login";
         }
+
         List<Order> orders = orderService.getOrdersByUserId(userId);
         model.addAttribute("orders", orders != null ? orders : new ArrayList<>());
         logger.info("Found {} orders for display", orders != null ? orders.size() : 0);
@@ -123,11 +128,13 @@ public class OrderController {
         if (userId == null) {
             return "redirect:/login";
         }
+
         Map<Long, List<Product>> userCarts = (Map<Long, List<Product>>) session.getAttribute("userCarts");
         if (userCarts == null) {
             userCarts = new HashMap<>();
             session.setAttribute("userCarts", userCarts);
         }
+
         List<Product> cart = userCarts.getOrDefault(userId, new ArrayList<>());
         Product product = productService.getProductById(productId);
         cart.add(product);

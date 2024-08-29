@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "`user`")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,7 +15,7 @@ public class User {
 
     private String email;
     private String password;
-    private String phoneNumber; // 新增的電話號碼欄位
+    private String phoneNumber;
     private boolean isAdmin;
 
     // 構造函數
@@ -43,6 +44,7 @@ public class User {
 
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+
     public boolean isAdmin() { return isAdmin; }
     public void setAdmin(boolean admin) { isAdmin = admin; }
 }
