@@ -288,18 +288,20 @@ function loadCart() {
                     <td>${item.price}</td>
                     <td>${item.quantity}</td>
                     <td>${item.price * item.quantity}</td>
-                    <td><button onclick="removeItem('${item.name}')">刪除</button></td>
+                    <td><button onclick="removeItem(this)">刪除</button></td>
                 </tr>
             `;
         cartItems.innerHTML += row;
     });
 }
 
-function removeItem(name) {
+function removeItem(button) {
+    const row = $(button).closest('tr');
+    const name = row.find('td:first').text();
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart = cart.filter(item => item.name !== name);
     localStorage.setItem('cart', JSON.stringify(cart));
-    loadCart();
+    row.remove();
 }
 
 function goBack() {
@@ -313,24 +315,41 @@ function confirmOrder() {
         return;
     }
 
-    fetch('/api/orders', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+    submitOrder();
+}
+
+function submitOrder() {
+    var items = [];
+    $('#cartTable tr:not(:first)').each(function() {
+        var item = {
+            productName: $(this).find('td:eq(0)').text(),
+            price: parseFloat($(this).find('td:eq(1)').text()),
+            quantity: parseInt($(this).find('td:eq(2)').text())
+        };
+        items.push(item);
+    });
+
+    $.ajax({
+        url: '/orders/submit-order',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(items),
+        success: function(response) {
+            alert('訂單已送出');
+            $('#cartTable tr:not(:first)').remove(); // 清空購物車
+            localStorage.removeItem('cart'); // 清除本地存儲的購物車數據
+            location.href = '/orders/order-history'; // 導向訂單歷史頁面
         },
-        body: JSON.stringify(cart)
-    })
-        .then(response => response.json())
-        .then(data => {
-            alert('訂單已成功送出！');
-            localStorage.removeItem('cart');
-            window.location.href = '/order-history';
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('訂單送出失敗，請稍後再試。');
-        });
+        error: function(xhr, status, error) {
+            alert('訂單提交失敗: ' + xhr.responseText);
+            console.error('Error details:', xhr.status, xhr.statusText, xhr.responseText);
+        }
+    });
 }
 
 // Load cart when page loads
-document.addEventListener('DOMContentLoaded', loadCart);
+$(document).ready(function() {
+    if ($('#cartItems tr').length === 0) {
+        loadCart();
+    }
+});
