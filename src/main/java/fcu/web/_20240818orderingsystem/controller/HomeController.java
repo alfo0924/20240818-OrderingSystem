@@ -59,9 +59,10 @@ public class HomeController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
+    public String logout(HttpSession session, Model model) {
+        session.invalidate(); // 這會清除所有 session 數據，包括購物車
+        model.addAttribute("countdown", 3);
+        return "logout-success";
     }
 
     @GetMapping("/order")
