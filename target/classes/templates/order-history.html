@@ -1,44 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>訂單查詢</title>
 </head>
 <body>
 <h1>訂單查詢</h1>
-
-<!-- 這裡可以添加訂單列表或其他相關內容 -->
-<p>您的訂單歷史將顯示在這裡。</p>
-!-- order-history.html -->
-<div id="orderHistory">
-    <!-- Orders will be displayed here -->
+<div th:if="${orders.isEmpty()}">
+    <p>目前沒有訂單記錄。</p>
 </div>
-<!-- 返回按鈕 -->
-<a href="/member">返回會員專區</a>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/api/orders')
-            .then(response => response.json())
-            .then(orders => {
-                const orderHistory = document.getElementById('orderHistory');
-                orders.forEach(order => {
-                    const orderElement = document.createElement('div');
-                    orderElement.innerHTML = `
-                        <h3>Order #${order.orderNumber}</h3>
-                        <p>Date: ${order.orderDateTime}</p>
-                        <ul>
-                            ${order.items.map(item => `
-                                <li>${item.productName} - Quantity: ${item.quantity}, Price: $${item.price}</li>
-                            `).join('')}
-                        </ul>
-                    `;
-                    orderHistory.appendChild(orderElement);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    });
-</script>
-
-
+<div th:unless="${orders.isEmpty()}">
+    <p>訂單數量：<span th:text="${orders.size()}"></span></p>
+    <div th:each="order : ${orders}">
+        <h2>訂單編號: <span th:text="${order.id}"></span></h2>
+        <p>訂單日期: <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+        <table>
+            <tr>
+                <th>商品名稱</th>
+                <th>單價</th>
+                <th>數量</th>
+                <th>總價</th>
+            </tr>
+            <tr th:each="item : ${order.items}">
+                <td th:text="${item.productName}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.price * item.quantity}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<button onclick="location.href='/member'">返回會員專區</button>
 </body>
 </html>

@@ -15,29 +15,29 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px; /* 增加一些内边距以防止内容在小屏幕上紧贴边缘 */
+            padding: 20px;
         }
         .login-container {
-            background-color: rgba(0, 0, 0, 0.3); /* 半透明背景遮罩 */
+            background-color: rgba(0, 0, 0, 0.3);
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
             width: 100%;
-            max-width: 500px; /* 增加容器的最大宽度 */
+            max-width: 500px;
         }
         .form-group label {
-            font-size: 1.5rem; /* 增加标签的字体大小 */
+            font-size: 1.5rem;
         }
         .form-control {
             background-color: #6c757d;
             border: none;
             color: white;
-            font-size: 1.5rem; /* 增加输入框字体大小 */
-            padding: 10px; /* 增加输入框内边距 */
+            font-size: 1.5rem;
+            padding: 10px;
         }
         .form-control::placeholder {
-            color: #adb5bd; /* 改变 placeholder 文字颜色 */
-            font-size: 1.1rem; /* 增加提示字大小 */
+            color: #adb5bd;
+            font-size: 1.1rem;
         }
         .form-control:focus {
             background-color: #5a6268;
@@ -47,8 +47,8 @@
         .btn-primary {
             background-color: #007bff;
             border: none;
-            font-size: 1.5rem; /* 增加按钮的字体大小 */
-            padding: 12px 20px; /* 增加按钮的内边距 */
+            font-size: 1.5rem;
+            padding: 12px 20px;
         }
         .btn-primary:hover {
             background-color: #0056b3;
@@ -57,13 +57,13 @@
             color: #adb5bd;
         }
         h1 {
-            font-size: 3.5rem; /* 增加标题的字体大小 */
+            font-size: 3.5rem;
         }
         p {
-            font-size: 1.85rem; /* 增加副标题的字体大小 */
+            font-size: 1.85rem;
         }
         .text-light {
-            font-size: 1.5rem; /* 增加註冊和返回链接的字体大小 */
+            font-size: 1.5rem;
         }
     </style>
 </head>
@@ -72,7 +72,7 @@
     <h1 class="text-center">點餐系統登入</h1>
     <p class="text-center">輕鬆點餐，享受美味</p>
     <!-- 添加錯誤消息顯示 -->
-    <div th:if="${error}" style="color: red;">
+    <div th:if="${error}" class="alert alert-danger " role="alert">
         <p th:text="${error}"></p>
     </div>
     <form th:action="@{/login}" method="post">
@@ -85,7 +85,7 @@
             <input type="password" id="password" name="password" class="form-control" placeholder="6-12個字元，包含英文字母及數字(區分大小寫)" required>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary btn-block" onclick="window.location.href='login-success.html'">登入</button>
+            <button type="submit" class="btn btn-primary btn-block">登入</button>
         </div>
     </form>
     <div class="text-center mt-3">

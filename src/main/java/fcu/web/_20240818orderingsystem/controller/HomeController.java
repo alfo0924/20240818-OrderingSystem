@@ -40,6 +40,10 @@ public class HomeController {
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         User user = userService.findByUsername(username);
+        if (username.isEmpty() || password.isEmpty()) {
+            model.addAttribute("error", "請輸入帳號密碼");
+            return "login";
+        }
         if (user == null) {
             model.addAttribute("error", "無此帳號密碼");
             return "login";
@@ -49,14 +53,18 @@ public class HomeController {
         } else {
             session.setAttribute("loggedIn", true);
             session.setAttribute("username", username);
-            return "redirect:/order";
+            session.setAttribute("userId", user.getId());  // 添加這行來設置userId
+            return "login-success";
         }
     }
+
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
+    public String logout(HttpSession session, Model model) {
+        session.invalidate(); // 這會清除所有 session 數據，包括購物車
+        model.addAttribute("countdown", 3);
+        return "logout-success";
     }
+
     @GetMapping("/order")
     public String orderPage(HttpSession session) {
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
@@ -80,7 +88,6 @@ public class HomeController {
         }
     }
 
-
     @GetMapping("/member/edit")
     public String showEditMemberForm(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
@@ -102,6 +109,7 @@ public class HomeController {
         session.setAttribute("username", existingUser.getUsername());
         return "redirect:/member";
     }
+
     @GetMapping("/member/order-history")
     public String showOrderHistory(HttpSession session, Model model) {
         Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
@@ -114,5 +122,4 @@ public class HomeController {
             return "redirect:/login";
         }
     }
-
 }
