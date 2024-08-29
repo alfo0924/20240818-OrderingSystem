@@ -7,7 +7,23 @@ h1{
     color: white;
     text-align: left;
     font-size: 50px;
+    font-family: 'Noto Sans TC',sans-serif
 
+}
+h2{
+    color: azure;
+    text-align: left;
+    font-size: 50px;
+    font-family: 'Noto Sans TC',sans-serif
+}
+
+h3{
+    color: white;
+    text-align: left;
+    font-size: 70px;
+    font-weight: bold;
+    margin-left: -100px;
+    font-family: 'Noto Sans TC',sans-serif
 }
 
 p{
@@ -15,13 +31,16 @@ p{
     text-align: left;
     margin: 0 0 0 50px;
 }
-
+.navbar{
+    margin-top: 10px;
+}
 .nav-link {
     color: white; /* 設定連結文字顏色為白色 */
     font-size: 25px;/* 調整字體大小 */
     font-weight: bold; /* 設定字體為粗體 */
     padding: 10px 15px; /* 調整內部填充空間 */
     transition: color 0.3s ease, background-color 0.3s ease; /* 添加過渡效果 */
+
 }
 
 .nav-link:hover {
@@ -259,3 +278,120 @@ p{
     55% { width: 100%; right: 0; }
     100% { width: 0; right: 100%; }
 }
+
+/*首字CSS*/
+.wrapper {
+    --text-color: #ffffff; /* 使用白色文字以增加對比度 */
+    position: relative;
+    width: 600px;  /* 增加寬度以容納更大的文字和額外空間 */
+    height: 200px; /* 保持您調整後的高度 */
+    margin-left: 100px;
+    margin-bottom: 20px;
+}
+
+.wrapper a {
+    position: absolute;
+    height: 100%;
+    z-index: 1;
+}
+
+.wrapper a:nth-child(1) { left: 0; width: 25%; }
+.wrapper a:nth-child(2) { left: 25%; width: 25%; }
+.wrapper a:nth-child(3) { left: 50%; width: 25%; }
+.wrapper a:nth-child(4) { left: 75%; width: 25%; }
+
+.wrapper a:hover {
+    z-index: 2;
+}
+
+@keyframes fill-text {
+    0% { clip-path: var(--fill-from); }
+    100% {
+        clip-path: var(--fill-to);
+        color: var(--text-color);
+    }
+}
+
+.fill-text {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text-color);
+    text-stroke: 1px var(--text-color);
+    font-size: 100px;
+    font-family: 'Noto Sans TC',sans-serif;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+.fill-text::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: blanchedalmond;
+    /*background: linear-gradient(90deg, #FFB200, #EB5B00, #E4003A, #FFB200); !* 起始和結束顏色相同 *!*/
+    /*background-size: 300% 100%; !* 增加背景尺寸以實現平滑流動 *!*/
+    /*background-clip: text;*/
+    /*-webkit-background-clip: text;*/
+    /*color: transparent;*/
+    /*animation: color-flow 5s linear infinite; !* 保持動畫持續 *!*/
+}
+
+/* 定義平滑流動的色彩動畫 */
+/*@keyframes color-flow {*/
+/*    0% {*/
+/*        background-position: 0% 50%; !* 起始位置 *!*/
+/*    }*/
+/*    50% {*/
+/*        background-position: 100% 50%; !* 流動到右側 *!*/
+/*    }*/
+/*    100% {*/
+/*        background-position: 0% 50%; !* 返回起始位置，形成循環 *!*/
+/*    }*/
+/*}*/
+
+
+.fill-text::after {
+    --hover-text: "輕鬆點!";
+    content: var(--hover-text);
+    -webkit-text-stroke: initial;
+    text-stroke: initial;
+    font: 25px/1.5 'Microsoft JhengHei', sans-serif;
+    color: #e0e0e0; /* 提示文字使用淺灰色以增加對比度 */
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+
+}
+
+.wrapper a:nth-child(1):hover ~ .fill-text::before {
+    --fill-from: polygon(0 0, 25% 0, 25% 100%, 0 100%);
+    --fill-to: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    animation: fill-text 1s forwards;
+}
+.wrapper a:nth-child(1):hover ~ .fill-text::after { --hover-text: "開心點!"; }
+
+.wrapper a:nth-child(2):hover ~ .fill-text::before {
+    --fill-from: polygon(25% 0, 50% 0, 50% 100%, 25% 100%);
+    --fill-to: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    animation: fill-text 1s forwards;
+}
+.wrapper a:nth-child(2):hover ~ .fill-text::after { --hover-text: "開心點!"; }
+
+.wrapper a:nth-child(3):hover ~ .fill-text::before {
+    --fill-from: polygon(50% 0, 75% 0, 75% 100%, 50% 100%);
+    --fill-to: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    animation: fill-text 1s forwards;
+}
+.wrapper a:nth-child(3):hover ~ .fill-text::after { --hover-text: "歡樂點!"; }
+
+.wrapper a:nth-child(4):hover ~ .fill-text::before {
+    --fill-from: polygon(75% 0, 100% 0, 100% 100%, 75% 100%);
+    --fill-to: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    animation: fill-text 1s forwards;
+}
+.wrapper a:nth-child(4):hover ~ .fill-text::after { --hover-text: "歡樂點!"; }
